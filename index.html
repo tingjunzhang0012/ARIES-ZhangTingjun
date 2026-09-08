@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AriesZHANG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --tile-size: clamp(156px, 16.6vw, 188px);
+            --column-gap: clamp(42px, 7.6vw, 86px);
+            --row-gap: clamp(62px, 7.8vw, 86px);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fff;
+            min-height: 100vh;
+            color: #111;
+            line-height: 1.5;
+        }
+
+        .home-background-video {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            background: #fff;
+        }
+
+        .background-wash {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: rgba(255,255,255,0.22);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 28px 56px;
+            background: rgba(255,255,255,0.78);
+            backdrop-filter: blur(18px);
+        }
+
+        .nav-left {
+            color: #111;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-right a {
+            color: #111;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transition: opacity 0.25s ease;
+        }
+
+        .nav-right a:hover {
+            opacity: 0.48;
+        }
+
+        main {
+            min-height: 100vh;
+            padding: 126px 24px 112px;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(3, var(--tile-size));
+            justify-content: center;
+            gap: var(--row-gap) var(--column-gap);
+        }
+
+        .project-card {
+            position: relative;
+            display: block;
+            width: var(--tile-size);
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f6f6f4;
+            border: 1px solid rgba(255,255,255,0.28);
+            box-shadow:
+                0 2px 5px rgba(22, 22, 22, 0.08),
+                0 18px 34px -22px rgba(22, 22, 22, 0.52),
+                0 34px 52px -38px rgba(22, 22, 22, 0.32);
+            transform: translateY(0);
+            transition: transform 0.32s ease, box-shadow 0.32s ease;
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow:
+                0 3px 7px rgba(22, 22, 22, 0.1),
+                0 24px 42px -24px rgba(22, 22, 22, 0.58),
+                0 40px 62px -42px rgba(22, 22, 22, 0.36);
+        }
+
+        .project-card:hover img {
+            transform: scale(1.045);
+        }
+
+        .project-card::after {
+            content: attr(data-title);
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 34px 14px 14px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            background: linear-gradient(to top, rgba(0,0,0,0.62), rgba(0,0,0,0));
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.28s ease, transform 0.28s ease;
+        }
+
+        .project-card:hover::after,
+        .project-card:focus-visible::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card:focus-visible {
+            outline: 2px solid #111;
+            outline-offset: 6px;
+        }
+
+        footer {
+            padding: 58px 32px 64px;
+            color: #111;
+            text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.84);
+            backdrop-filter: blur(18px);
+        }
+
+        .contact-info {
+            margin-bottom: 28px;
+        }
+
+        .contact-name {
+            margin-bottom: 22px;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+        }
+
+        .contact-list {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            color: #111;
+            font-size: 12px;
+        }
+
+        .contact-label {
+            margin-bottom: 6px;
+            color: #666;
+            font-size: 10px;
+            letter-spacing: 0.14em;
+        }
+
+        .footer-text {
+            color: #777;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+        }
+
+        @media (min-width: 1320px) {
+            :root {
+                --tile-size: 188px;
+                --column-gap: 88px;
+                --row-gap: 86px;
+            }
+        }
+
+        @media (max-width: 760px) {
+            :root {
+                --tile-size: min(42vw, 178px);
+                --column-gap: 26px;
+                --row-gap: 34px;
+            }
+
+            nav {
+                padding: 22px 24px;
+            }
+
+            .nav-left {
+                font-size: 14px;
+            }
+
+            .nav-right {
+                gap: 18px;
+            }
+
+            main {
+                padding: 100px 18px 78px;
+            }
+
+            .works-grid {
+                grid-template-columns: repeat(2, var(--tile-size));
+            }
+
+            .contact-list {
+                flex-direction: column;
+                gap: 18px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            :root {
+                --tile-size: min(78vw, 220px);
+            }
+
+            .nav-right {
+                display: none;
+            }
+
+            .works-grid {
+                grid-template-columns: var(--tile-size);
+            }
+        }
+    </style>
+</head>
+<body>
+    <video class="home-background-video" autoplay muted loop playsinline preload="metadata">
+        <source src="homepage-background.mp4" type="video/mp4">
+    </video>
+    <div class="background-wash"></div>
+
+    <nav>
+        <div class="nav-left">AriesZHANG</div>
+        <div class="nav-right">
+            <a href="#works">Works</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <main id="works">
+        <div class="works-grid">
+            <a href="project-1.html" class="project-card" data-title="用户说-官方网站设计" aria-label="用户说-官方网站设计">
+                <img src="homepage-covers/1.png" alt="用户说-官方网站设计" loading="eager" fetchpriority="high">
+            </a>
+            <a href="project-2.html" class="project-card" data-title="Have You Walked 行咗未" aria-label="Have You Walked 行咗未">
+                <img src="homepage-covers/2.png" alt="Have You Walked 行咗未" loading="eager" fetchpriority="high">
+            </a>
+            <a href="project-3.html" class="project-card" data-title="比亚迪-泡泡迪·有感而生" aria-label="比亚迪-泡泡迪·有感而生">
+                <img src="homepage-covers/3.png" alt="比亚迪-泡泡迪·有感而生" loading="eager" fetchpriority="high">
+            </a>
+            <a href="project-4.html" class="project-card" data-title="留声-维吾尔文保护项目" aria-label="留声-维吾尔文保护项目">
+                <img src="homepage-covers/4.png" alt="留声-维吾尔文保护项目" loading="eager" fetchpriority="high">
+            </a>
+            <a href="project-5.html" class="project-card" data-title="藤上的蚂蚱-品牌设计" aria-label="藤上的蚂蚱-品牌设计">
+                <img src="homepage-covers/5.png" alt="藤上的蚂蚱-品牌设计" loading="eager" fetchpriority="high">
+            </a>
+            <a href="project-6.html" class="project-card" data-title="个人实验-动态海报" aria-label="个人实验-动态海报">
+                <img src="homepage-covers/6.png" alt="个人实验-动态海报" loading="eager" fetchpriority="high">
+            </a>
+            <a href="project-7.html" class="project-card" data-title="小生花蛋-插画包装设计" aria-label="小生花蛋-插画包装设计">
+                <img src="homepage-covers/7.png" alt="小生花蛋-插画包装设计" loading="eager" fetchpriority="high">
+            </a>
+            <a href="project-12.html" class="project-card" data-title="优必选实习期间-UIUX/视觉设计" aria-label="优必选实习期间-UIUX/视觉设计">
+                <img src="homepage-covers/12.png" alt="优必选实习期间-UIUX/视觉设计" loading="lazy">
+            </a>
+            <a href="project-8.html" class="project-card" data-title="商业设计-广告/公众号/KV" aria-label="商业设计-广告/公众号/KV">
+                <img src="homepage-covers/8.png" alt="商业设计-广告/公众号/KV" loading="lazy">
+            </a>
+            <a href="project-9.html" class="project-card" data-title="古越龙山-小青玉" aria-label="古越龙山-小青玉">
+                <img src="homepage-covers/9.png" alt="古越龙山-小青玉" loading="lazy">
+            </a>
+            <a href="project-10.html" class="project-card" data-title="腾讯-天才妈妈" aria-label="腾讯-天才妈妈">
+                <img src="homepage-covers/10.png" alt="腾讯-天才妈妈" loading="lazy">
+            </a>
+        </div>
+    </main>
+
+    <footer id="contact">
+        <div class="contact-info">
+            <div class="contact-name">AriesZHANG</div>
+            <div class="contact-list">
+                <div>
+                    <div class="contact-label">WECHAT</div>
+                    <div>19303028782</div>
+                </div>
+                <div>
+                    <div class="contact-label">TEL</div>
+                    <div>19303028782 / 63677618</div>
+                </div>
+                <div>
+                    <div class="contact-label">MAIL</div>
+                    <div>tingjunzhang00@163.com</div>
+                </div>
+            </div>
+        </div>
+        <p class="footer-text">&copy; 2026 ARIES ZHANG. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const loopVideos = document.querySelectorAll('video');
+        loopVideos.forEach((video) => {
+            video.addEventListener('loadedmetadata', () => {
+                video.play().catch(() => {});
+            });
+            video.addEventListener('timeupdate', () => {
+                if (video.duration && video.currentTime > video.duration - 0.08) {
+                    video.currentTime = 0;
+                    video.play().catch(() => {});
+                }
+            });
+        });
+    </script>
+</body>
+</html>
