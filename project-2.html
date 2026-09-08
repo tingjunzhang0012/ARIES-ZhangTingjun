@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Have You Walked 行咗未 - AriesZHANG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="project.css">
+</head>
+<body>
+    <a href="index.html" class="back-btn">← BACK</a>
+    <div class="project-container">
+        <h1 class="project-title">Have You Walked 行咗未</h1>
+        <p class="project-category">APP设计 / 香港青协项目</p>
+        <div class="image-grid">
+            <img src="11行咗未/1.png" alt="行咗未 1">
+            <img src="11行咗未/2.png" alt="行咗未 2">
+            <img src="11行咗未/3.png" alt="行咗未 3">
+            <img src="11行咗未/4.png" alt="行咗未 4">
+            <img src="11行咗未/5.png" alt="行咗未 5">
+            <img src="11行咗未/6.png" alt="行咗未 6">
+            <img src="11行咗未/7.png" alt="行咗未 7">
+            <img src="11行咗未/8.png" alt="行咗未 8">
+            <img src="11行咗未/9.png" alt="行咗未 9">
+            <div class="video-wrapper">
+                <video id="projectVideo" src="11行咗未/11.MP4" preload="metadata"></video>
+                <div class="video-controls">
+                    <button id="playBtn" class="control-btn" aria-label="播放/暂停">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <button id="muteBtn" class="control-btn" aria-label="静音/取消静音">
+                        <svg id="volumeIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            background: #000;
+        }
+        .video-wrapper video {
+            width: 100%;
+            display: block;
+        }
+        .video-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            z-index: 10;
+        }
+        .control-btn {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            color: #111;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(8px);
+        }
+        .control-btn:hover {
+            background: #fff;
+            transform: scale(1.08);
+        }
+        .control-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+        .control-btn.playing svg {
+            d: path("M6 4h4v16H6V4zm8 0h4v16h-4V4z");
+        }
+    </style>
+    <script>
+        const video = document.getElementById('projectVideo');
+        const playBtn = document.getElementById('playBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeIcon = document.getElementById('volumeIcon');
+        let isMuted = true;
+        video.muted = true;
+        const playPath = '<path d="M8 5v14l11-7z"/>';
+        const pausePath = '<path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>';
+        const volumeOnPath = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+        const volumeOffPath = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+        playBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playBtn.innerHTML = pausePath;
+                playBtn.classList.add('playing');
+            } else {
+                video.pause();
+                playBtn.innerHTML = playPath;
+                playBtn.classList.remove('playing');
+            }
+        });
+        muteBtn.addEventListener('click', () => {
+            isMuted = !isMuted;
+            video.muted = isMuted;
+            volumeIcon.innerHTML = isMuted ? volumeOffPath : volumeOnPath;
+        });
+        video.addEventListener('ended', () => {
+            playBtn.innerHTML = playPath;
+            playBtn.classList.remove('playing');
+        });
+    </script>
+</body>
+</html>
